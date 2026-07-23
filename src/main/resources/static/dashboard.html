@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | LogiTrack</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="app-layout">
+
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">LT</div>
+                <div>
+                    <h1>LogiTrack</h1>
+                    <p>Warehouse Management</p>
+                </div>
+            </div>
+
+            <nav class="menu">
+                <button class="menu-item active" data-section="dashboardSection">
+                    <span>▦</span> Dashboard
+                </button>
+
+                <button class="menu-item" data-section="bodegasSection">
+                    <span>▣</span> Warehouses
+                </button>
+
+                <button class="menu-item" data-section="productosSection">
+                    <span>▤</span> Products
+                </button>
+
+                <button class="menu-item" data-section="movimientosSection">
+                    <span>↔</span> Movements
+                </button>
+
+                <button class="menu-item" data-section="auditoriaSection">
+                    <span>☷</span> Audit Log
+                </button>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+                <div class="breadcrumb">
+                    <span>LogiTrack</span>
+                    <span>›</span>
+                    <strong>Dashboard</strong>
+                </div>
+
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input type="text" placeholder="Search resources...">
+                </div>
+
+                <div class="top-actions">
+                    <button class="icon-button">🔔</button>
+                    <button class="icon-button">⚙</button>
+                    <button id="logoutBtn" class="logout-button">↪ Logout</button>
+                    <div class="avatar">AC</div>
+                </div>
+            </header>
+
+            <section id="dashboardSection" class="content-section active-section">
+
+                <div class="page-header">
+                    <div>
+                        <h2>Dashboard Overview</h2>
+                        <p>Real-time inventory and movement metrics.</p>
+                    </div>
+
+                    <div class="header-actions">
+                        <button class="date-button">▣ Últimos 30 días</button>
+                        <button id="refreshBtn" class="btn-dark">⟳ Actualizar</button>
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+                    <article class="metric-card">
+                        <div class="card-top">
+                            <div class="card-icon neutral">▣</div>
+                            <span class="badge">Active</span>
+                        </div>
+                        <p>Total Bodegas</p>
+                        <h3 id="totalBodegas">0</h3>
+                    </article>
+
+                    <article class="metric-card">
+                        <div class="card-top">
+                            <div class="card-icon neutral">▤</div>
+                            <span class="badge green">↗ +4.2%</span>
+                        </div>
+                        <p>Total Productos</p>
+                        <h3 id="totalProductos">0</h3>
+                    </article>
+
+                    <article class="metric-card danger-card">
+                        <div class="card-top">
+                            <div class="card-icon danger">⚠</div>
+                            <span class="badge red">Action Required</span>
+                        </div>
+                        <p>Productos con stock bajo</p>
+                        <h3><span id="stockBajo">0</span> <small>items &lt; min level</small></h3>
+                    </article>
+
+                    <article class="metric-card">
+                        <div class="card-top">
+                            <div class="card-icon blue">▰</div>
+                            <span class="badge">This Month</span>
+                        </div>
+                        <p>Movimientos del mes</p>
+                        <h3 id="movimientosMes">0</h3>
+                    </article>
+                </div>
+
+                <div class="dashboard-grid">
+                    <section class="panel stock-panel">
+                        <div class="panel-header">
+                            <h3>Stock total por bodega</h3>
+                            <button class="dots">⋮</button>
+                        </div>
+
+                        <div id="stockChart" class="bar-chart">
+                            <!-- JS render -->
+                        </div>
+                    </section>
+
+                    <section class="panel top-products-panel">
+                        <div class="panel-header">
+                            <h3>Top 5: Más Movidos</h3>
+                            <button class="link-button">View All</button>
+                        </div>
+
+                        <div class="table-header">
+                            <span>PRODUCTO</span>
+                            <span>MOV.</span>
+                        </div>
+
+                        <div id="topProductosList" class="top-list">
+                            <!-- JS render -->
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <section id="bodegasSection" class="content-section">
+                <div class="page-header">
+                    <div>
+                        <h2>Bodegas</h2>
+                        <p>Listado de bodegas registradas.</p>
+                    </div>
+                    <button onclick="cargarBodegas()" class="btn-dark">Actualizar</button>
+                </div>
+
+                <div class="panel">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Ubicación</th>
+                                <th>Capacidad</th>
+                                <th>Encargado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodegasTable"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="productosSection" class="content-section">
+                <div class="page-header">
+                    <div>
+                        <h2>Productos</h2>
+                        <p>Listado de productos registrados.</p>
+                    </div>
+                    <button onclick="cargarProductos()" class="btn-dark">Actualizar</button>
+                </div>
+
+                <div class="panel">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Stock</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productosTable"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="movimientosSection" class="content-section">
+                <div class="page-header">
+                    <div>
+                        <h2>Movimientos</h2>
+                        <p>Registro de entradas, salidas y transferencias.</p>
+                    </div>
+                    <button onclick="cargarMovimientos()" class="btn-dark">Actualizar</button>
+                </div>
+
+                <div class="panel">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Tipo</th>
+                                <th>Usuario</th>
+                                <th>Origen</th>
+                                <th>Destino</th>
+                            </tr>
+                        </thead>
+                        <tbody id="movimientosTable"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="auditoriaSection" class="content-section">
+                <div class="page-header">
+                    <div>
+                        <h2>Auditoría</h2>
+                        <p>Historial de operaciones realizadas en el sistema.</p>
+                    </div>
+                    <button onclick="cargarAuditorias()" class="btn-dark">Actualizar</button>
+                </div>
+
+                <div class="panel">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Operación</th>
+                                <th>Usuario</th>
+                                <th>Entidad</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="auditoriasTable"></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

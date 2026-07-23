@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**").permitAll()
 
                         // Archivos estáticos del frontend
-                        .requestMatchers("/", "/index.html", "/login.html").permitAll()
+                        .requestMatchers("/", "/index.html", "/login.html", "/dashboard.html").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
 
                         // Bodegas - Consultas para ADMIN y EMPLEADO
