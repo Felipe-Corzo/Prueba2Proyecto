@@ -1,7 +1,9 @@
 package com.logitrack.service;
 
+import com.logitrack.config.Auditable;
 import com.logitrack.exception.ResourceNotFoundException;
 import com.logitrack.model.Bodega;
+import com.logitrack.model.TipoOperacion;
 import com.logitrack.repository.BodegaRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +27,12 @@ public class BodegaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Bodega no encontrada con id: " + id));
     }
 
+    @Auditable(operacion = TipoOperacion.INSERT, entidad = "Bodega", entidadClase = Bodega.class)
     public Bodega crear(Bodega bodega) {
         return bodegaRepository.save(bodega);
     }
 
+    @Auditable(operacion = TipoOperacion.UPDATE, entidad = "Bodega", entidadClase = Bodega.class)
     public Bodega actualizar(Long id, Bodega bodegaActualizada) {
         Bodega bodegaExistente = buscarPorId(id);
 
@@ -40,6 +44,7 @@ public class BodegaService {
         return bodegaRepository.save(bodegaExistente);
     }
 
+    @Auditable(operacion = TipoOperacion.DELETE, entidad = "Bodega", entidadClase = Bodega.class)
     public void eliminar(Long id) {
         Bodega bodega = buscarPorId(id);
         bodegaRepository.delete(bodega);

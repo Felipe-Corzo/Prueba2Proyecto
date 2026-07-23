@@ -2,6 +2,7 @@ package com.logitrack.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,6 +22,26 @@ public class GlobalExceptionHandler {
         respuesta.put("fecha", LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Map<String, Object>> manejarBadRequest(BadRequestException ex) {
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("estado", 400);
+        respuesta.put("mensaje", ex.getMessage());
+        respuesta.put("fecha", LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuesta);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Map<String, Object>> manejarCredencialesInvalidas(BadCredentialsException ex) {
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("estado", 401);
+        respuesta.put("mensaje", "Email o contraseña incorrectos");
+        respuesta.put("fecha", LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(respuesta);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
