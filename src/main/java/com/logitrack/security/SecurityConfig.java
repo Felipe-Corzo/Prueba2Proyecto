@@ -42,6 +42,7 @@ public class SecurityConfig {
 
                         // Swagger/OpenAPI
                         .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/swagger-ui.html").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
 
                         // Archivos estáticos del frontend

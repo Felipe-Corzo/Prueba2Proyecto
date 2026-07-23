@@ -5,8 +5,11 @@ import com.logitrack.service.AuditoriaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/auditorias")
+@Tag(name = "Auditorías", description = "Operaciones relacionadas con las auditorías")
 public class AuditoriaController {
 
     private final AuditoriaService auditoriaService;

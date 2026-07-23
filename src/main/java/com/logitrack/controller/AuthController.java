@@ -7,12 +7,14 @@ import com.logitrack.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Autenticación", description = "Operaciones relacionadas con la autenticación de usuarios")
 public class AuthController {
 
     private final AuthService authService;
